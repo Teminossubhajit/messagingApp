@@ -1,6 +1,7 @@
 const express= require("express");
 const cors=require("cors");
 require('dotenv').config()
+const connectDb=require('./config/connectDB')
 
 const app=express()
 app.use(cors({
@@ -13,6 +14,8 @@ app.get('/',(request,response)=>{
         message:"server running at "+PORT
     })
 })
-app.listen(PORT,()=>{
-    console.log("server running at  "+PORT)
+connectDb().then(()=>{
+    app.listen(PORT,()=>{
+        console.log("server running at  "+PORT)
+    })
 })
