@@ -1,26 +1,30 @@
-const express= require("express");
-const cors=require("cors");
-require('dotenv').config()
+const express = require("express");
+const cors = require("cors");
+require('dotenv').config();
+const connectDb = require('./config/connectDB');
+const router = require('./routes/index');
+const app = express();
 
-const router=require('./routes/index');
-const connectDB = require("./config/connectDB");
-const app=express()
 app.use(cors({
-    origin:process.env.FRONTEND_URL,
-    Credentials:true
-}))
-app.use(express.json())
-const PORT=process.env.PORT || 8080
-app.get('/',(request,response)=>{
-    response.json({
-        message:"server running at "+PORT
-    })
-})
-//api endpoint
-app.use('/api',router)
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}));
 
-connectDB().then(()=>{
-    app.listen(PORT,()=>{
-        console.log("server running at  "+PORT)
-    })
-})
+app.use(express.json());
+
+const PORT = process.env.PORT || 8080;
+
+app.get('/', (request, response) => {
+    response.json({
+        message: "server running at " + PORT
+    });
+});
+
+// api endpoint
+app.use('/api', router);
+
+connectDb().then(() => {
+    app.listen(PORT, () => {
+        console.log("server running at " + PORT);
+    });
+});
